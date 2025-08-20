@@ -29,6 +29,8 @@ Investigated and documented the Conti ransomware attack chain by analyzing logs,
 
 Answer: C:\Users\Administrator\Documents\cmd.exe
 
+<img width="769" height="643" alt="Screenshot 2025-08-19 195457" src="https://github.com/user-attachments/assets/edfcc30b-6881-4e30-a70c-66ccf8d19289" />
+
 Reason: since we know that this ransomware has created a number of ReadMe.txt files, we can start by searching for event code 11, which is the file creation event code. We also know to look for this code based on question 2. By examining the important fields for this search, we can see that there are only 10 results in the image field. When looking into this image field, we can see that a cmd executable is located in a suspicious directory: C:\Users\Administrators\Documents\cmd.exe. 
 
 ### Q2: What is the Sysmon event ID for the related file creation event?
@@ -41,11 +43,15 @@ Reason: Sysmon Event ID 11: This event is logged by Sysmon (System Monitor) when
 
 Answer: 290c7dfb01e50cea9e19da81a781af2c
 
+<img width="341" height="113" alt="Screenshot 2025-08-19 195725" src="https://github.com/user-attachments/assets/11a2a5e4-4f81-4b96-81fd-87d16607ef42" />
+
 Reason: got to the ransomware location click on view events & select field type (filter for) 'Hash', I simply searched by the image file from question 1 and included the MD5 string, which yielded results containing the MD5 for the specified image file.
 
 ### Q4: What file was saved to multiple folder locations?
 
 Answer: readme.txt
+
+<img width="780" height="614" alt="Screenshot 2025-08-19 200018" src="https://github.com/user-attachments/assets/1bafe5be-0796-4803-b778-6c2ec00debd7" />
 
 Reason: By searching for the file creation event code related to the ransomware in our query, we can examine the TargetFileName field and see readme.txt stored in multiple locations.
 
@@ -53,11 +59,15 @@ Reason: By searching for the file creation event code related to the ransomware 
 
 Answer: net user /add securityninja hardToHack123$
 
+<img width="727" height="305" alt="Screenshot 2025-08-19 200054" src="https://github.com/user-attachments/assets/07270342-fdaa-47d5-99d4-a9d2fccc87c4" />
+
 Reason: To find this answer we can search for any cases of the net user command in Splunk as it is the command line tool to create new users. After searching for this and looking under the CommandLine field we found the command that the attacker used.
 
 ### Q6: The attacker migrated the process for better persistence. What is the migrated process image (executable), and what is the original process image (executable) when the attacker got on the system?
 
 Answer: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe,C:\Windows\System32\wbem\unsecapp.exe
+
+<img width="437" height="200" alt="Screenshot 2025-08-19 200210" src="https://github.com/user-attachments/assets/4f2b0040-b5bf-431c-8bc3-0c95c4be886b" />
 
 Reason:  I knew I would most likely be searching by an event code, but I was unsure which event code I needed to search. The hint provided me with Sysmon event code 8, which is CreateRemoteThread. After some research, I found that this is used by malware to inject code and hide in another process. By searching for this event code, I found two logs, the first of which indicated that
 
@@ -71,11 +81,15 @@ Reason: Try Sysmon event code 8 & check Target Image.
 
 Answer: i3gfPctK1c2x.aspx
 
+<img width="718" height="444" alt="Screenshot 2025-08-19 200238" src="https://github.com/user-attachments/assets/ca01fab1-8d4b-4060-931e-7d1fb794d9e3" />
+
 Reason: I searched for anything containing the .aspx extension, as this is a common web shell extension. One field that popped up was the cs_uri_stem field, which shows the path of the request made over HTTP or HTTPS. In this field, we can see a suspicious-looking file, which is our answer.
 
 ### Q9: What is the command line that executed this web shell?
 
 Answer: attrib.exe -r \\win-aoqkg2as2q7.bellybear.local\C$\Program Files\Microsoft\Exchange Server\V15\FrontEnd\HttpProxy\owa\auth\i3gfPctK1c2x.aspx
+
+<img width="775" height="141" alt="Screenshot 2025-08-19 200418" src="https://github.com/user-attachments/assets/57aa9388-17cc-4868-9709-03429fbfd37e" />
 
 Reason: I searched the CommandLine field for anything containing the malicious web shell. During my search, I found one log that had the answer.
 
