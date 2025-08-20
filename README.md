@@ -67,7 +67,7 @@ Reason: To find this answer we can search for any cases of the net user command 
 
 Answer: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe,C:\Windows\System32\wbem\unsecapp.exe
 
-<img width="437" height="200" alt="Screenshot 2025-08-19 200210" src="https://github.com/user-attachments/assets/4f2b0040-b5bf-431c-8bc3-0c95c4be886b" />
+<img width="437" height="132" alt="Screenshot 2025-08-19 200210" src="https://github.com/user-attachments/assets/96622c36-ce30-46cc-81c4-1df6e51184b8" />
 
 Reason:  I knew I would most likely be searching by an event code, but I was unsure which event code I needed to search. The hint provided me with Sysmon event code 8, which is CreateRemoteThread. After some research, I found that this is used by malware to inject code and hide in another process. By searching for this event code, I found two logs, the first of which indicated that
 
